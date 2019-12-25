@@ -29,12 +29,15 @@
           <!-- 添加参数的按钮 -->
           <el-button type="primary" size="mini" :disabled="isBtnDisabled" @click="addDialogVisible=true">添加参数</el-button>
           <!-- 动态参数表格 -->
-          <el-table :data="manyTableData" border stripe>
+          <el-table :data="manyTableData" :show-header="showHeader" border stripe>
             <!-- 展开行 -->
             <el-table-column type="expand">
               <template slot-scope="scope">
                 <!-- 循环渲染Tag标签 -->
                 <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable @close="handleClose(i, scope.row)">{{item}}</el-tag>
+
+
+
                 <!-- 输入的文本框 -->
                 <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
                 </el-input>
@@ -82,6 +85,9 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane label="category 3" name="cat3">
+          <!-- 加入一个collps -->
+        </el-tab-pane>
       </el-tabs>
     </el-card>
 
@@ -121,6 +127,8 @@ export default {
     return {
       // 商品分类列表
       catelist: [],
+      // 是否显示表头
+      showHeader: false,
       // 级联选择框的配置对象
       cateProps: {
         value: 'cat_id',
@@ -132,9 +140,9 @@ export default {
       // 被激活的页签的名称
       activeName: 'many',
       // 动态参数的数据
-      manyTableData: [],
+      manyTableData: [{"attr_id":1757,"attr_name":"型号","cat_id":334,"attr_sel":"many","attr_write":"list","attr_vals":"318香槟金恒温,338玫瑰金恒温,350玫瑰金恒温,350自适温恒温,368碳烷双防,388WIFI恒温,538水气双调,ET10恒温爆款,L7零冷水,ST26水气双调,机械强排,10L,12L,13L,16L,8L 阿阿斯顿","delete_time":null},{"attr_id":3825,"attr_name":"123","cat_id":334,"attr_sel":"many","attr_write":"list","attr_vals":"","delete_time":null}],
       // 静态属性的数据
-      onlyTableData: [],
+      onlyTableData: [{"attr_id":2448,"attr_name":"主体参数-商品名称","cat_id":520,"attr_sel":"only","attr_write":"manual","attr_vals":"松下(Panasonic)蒸汽挂烫机","delete_time":null},{"attr_id":2449,"attr_name":"功能参数-缺水提示功能","cat_id":520,"attr_sel":"only","attr_write":"manual","attr_vals":"支持","delete_time":null},{"attr_id":2450,"attr_name":"规格参数-支架材质","cat_id":520,"attr_sel":"only","attr_write":"manual","attr_vals":"铝合金","delete_time":null}],
       // 控制添加对话框的显示与隐藏
       addDialogVisible: false,
       // 添加参数的表单数据对象
@@ -165,12 +173,38 @@ export default {
   methods: {
     // 获取所有的商品分类列表
     async getCateList() {
-      const { data: res } = await this.$http.get('categories')
-      if (res.meta.status !== 200) {
-        return this.$message.error('获取商品分类失败！')
-      }
-
-      this.catelist = res.data
+      // const { data: res } = await this.$http.get('categories')
+      // if (res.meta.status !== 200) {
+      //   return this.$message.error('获取商品分类失败！')
+      // }
+      const res_data = [{"cat_id":320,"cat_name":"厨卫电器1","cat_pid":0,"cat_level":0,"cat_deleted":false,
+        "children":[{"cat_id":325,"cat_name":"卫浴电器","cat_pid":320,"cat_level":1,"cat_deleted":false,
+          "children":[{"cat_id":334,"cat_name":"燃气热水器","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":335,"cat_name":"浴霸","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":336,"cat_name":"厨宝","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":337,"cat_name":"即热式","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":338,"cat_name":"太阳能","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":339,"cat_name":"智能马桶盖","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":340,"cat_name":"卫浴家电配件","cat_pid":325,"cat_level":2,"cat_deleted":false},
+            {"cat_id":1542,"cat_name":"99","cat_pid":325,"cat_level":2,"cat_deleted":false}]},
+          {"cat_id":332,"cat_name":"厨房大电","cat_pid":320,"cat_level":1,"cat_deleted":false,
+            "children":[{"cat_id":343,"cat_name":"油烟机","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":344,"cat_name":"燃气灶","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":345,"cat_name":"消毒柜","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":346,"cat_name":"嵌入式厨电","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":347,"cat_name":"洗碗机","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":348,"cat_name":"集成灶","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":349,"cat_name":"商用厨房电器","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":350,"cat_name":"垃圾处理器","cat_pid":332,"cat_level":2,"cat_deleted":false},
+              {"cat_id":1541,"cat_name":"1","cat_pid":332,"cat_level":2,"cat_deleted":false}]},
+          {"cat_id":342,"cat_name":"净水设备","cat_pid":320,"cat_level":1,"cat_deleted":false,
+            "children":[{"cat_id":353,"cat_name":"饮水机","cat_pid":342,"cat_level":2,"cat_deleted":false},
+              {"cat_id":355,"cat_name":"AO史密斯","cat_pid":342,"cat_level":2,"cat_deleted":false},
+              {"cat_id":357,"cat_name":"沁园","cat_pid":342,"cat_level":2,"cat_deleted":false},
+              {"cat_id":358,"cat_name":"3M","cat_pid":342,"cat_level":2,"cat_deleted":false},
+              {"cat_id":359,"cat_name":"美的","cat_pid":342,"cat_level":2,"cat_deleted":false}]}]}]
+        // this.catelist = res.data
+      this.catelist = res_data
 
       console.log(this.catelist)
     },

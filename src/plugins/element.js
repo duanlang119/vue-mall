@@ -37,7 +37,8 @@ import {
   CheckboxGroup,
   Checkbox,
   Progress,
-  Transfer
+  Transfer,
+  Collapse
 } from 'element-ui'
 
 Vue.use(Button)
@@ -76,6 +77,7 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Progress)
 Vue.use(Transfer)
+Vue.use(Collapse)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

@@ -9,6 +9,7 @@ import Roles from './components/power/Roles.vue'
 import Tasks from './components/templates/Task.vue'
 import ProjectsList from './components/projects/List.vue'
 import AddProject from './components/projects/Add.vue'
+import Params from './components/projects/Params.vue'
 
 Vue.use(Router)
 
@@ -27,7 +28,8 @@ const router = new Router({
         { path: '/roles', component: Roles },
         { path: '/tasks', component: Tasks },
         { path: '/projects', component: ProjectsList },
-        { path: '/projects/add', component: AddProject }
+        { path: '/projects/add', component: AddProject },
+        { path: '/params', component: Params }
       ]
     }
   ]
